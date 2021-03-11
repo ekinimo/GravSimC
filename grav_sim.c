@@ -13,8 +13,6 @@
 #define WIDTH   (1200)
 #define HEIGHT  (900)
 #define ITER_UNTIL_UPDATE (10)
-
-
 /*
 TODO:
 ---- a Simulation state structure
