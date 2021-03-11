@@ -156,10 +156,35 @@ static void collision_naive(Particle_t *p1,
 			     Particle_t  ** particles,
 			    size_t n) {
 
-  for(size_t i = 0 ; i < p1->id ; i++)
+  for(size_t i = 0 ; i < n ; i++)
     {
       Particle_t* p2 = particles[i]; 
-      collide(p1,p2);
+      //    collide(p1,p2);
+      if(p1->id != p2->id)
+	{
+	  if (DoParticlesOverlap(p1,p2))
+	    {
+	      printf("DETECTED COLLISSIION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	      StaticCollisionResolution(p1,p2);
+	      
+	    }
+	}
+      
+    }
+  for(size_t i = 0 ; i < n ; i++)
+    {
+      Particle_t* p2 = particles[i]; 
+      //    collide(p1,p2);
+      if(p1->id != p2->id)
+	{
+	  if (DoParticlesOverlap(p1,p2))
+	    {
+	      printf("DETECTED COLLISSIION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+	      DynamicCollisionResolution(p1,p2);
+	      
+	    }
+	}
+      
     }
 }
 
@@ -241,13 +266,15 @@ static void draw_reg_polygon(SDL_Renderer* renderer , float x, float y,float r,i
   float p1_old = x ;
   float p2_old = y + r;
 
+  for(float j = 0 ; j<= r ; j++){
   for(float i = 1 ; i<= n ; i++ ){
-    p1 = x + r*sin( i* incr);
-    p2 = y + r*cos( i* incr);
+    p1 = x + (r-j)*sin( i* incr);
+    p2 = y + (r-j)*cos( i* incr);
     SDL_RenderDrawLineF(renderer,p1,p2,p1_old,p2_old);
     p1_old = p1;
     p2_old = p2;
   }
+}
 }
 
 static void draw_particles(SDL_Renderer *renderer , Particle_t **particles, size_t n) {
